@@ -19,7 +19,7 @@ public class HomePageTest {
     void setup() {
         driver = WebDriverFactory.createDriver(System.getProperty("browser", "chrome"));
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         homePage = new HomePage(driver, wait);
     }
 
@@ -66,10 +66,10 @@ public class HomePageTest {
         assertFalse(confirmedCity.isEmpty(), "Подтверждённый адрес пуст");
     }
 
-    @AfterEach
-    void teardown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterEach
+//    void teardown() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 }

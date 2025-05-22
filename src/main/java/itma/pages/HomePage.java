@@ -6,9 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class HomePage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class HomePage extends BasePage {
 
     private final By productCards = By.cssSelector(".product-card__image-wrap");
 
@@ -29,10 +27,8 @@ public class HomePage {
     private final By addButton = By.xpath("//button[contains(@class, 'pui-button-element') and .//span[contains(text(),'Добавить')]]");
     private final By confirmedAddress = By.xpath("//button[contains(@class, 'address-button')]//span[contains(@class,'address-button__text')]");
 
-
     public HomePage(WebDriver driver, WebDriverWait wait) {
-        this.driver = driver;
-        this.wait = wait;
+        super(driver, wait);
     }
 
 
@@ -104,7 +100,7 @@ public class HomePage {
     public boolean isAddressInputFilled() {
         wait.until(driver -> !driver.findElement(addressInput).getAttribute("value").isEmpty());
         String value = driver.findElement(addressInput).getAttribute("value");
-        System.out.println("jopa"+
+        System.out.println("jopa" +
                 value
         );
         return value != null && !value.isEmpty() && !value.contains("Город, улица, номер дома");
