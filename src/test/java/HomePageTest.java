@@ -1,18 +1,13 @@
 import itma.pages.HomePage;
 import itma.utils.WebDriverFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.junit.jupiter.api.*;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HomePageTest {
@@ -37,7 +32,6 @@ public class HomePageTest {
     }
 
 
-
     //    главная страница -> избранные товары
     @Test
     @DisplayName("Переход в Избранное с главной страницы")
@@ -56,6 +50,20 @@ public class HomePageTest {
         homePage.openSearchTab();
         homePage.enterSearchQuery("ноутбук");
         assertTrue(homePage.isSearchResultCorrect(), "Результаты поиска отсутствуют или страница не отвечает");
+    }
+
+    //главная страница -> клик по адресу -> клик по карте -> добавить -> результат
+    @Test
+    public void testChangeCityThroughMap() {
+        homePage.open();
+
+        homePage.clickAddressButton();
+        homePage.clickOnMapCenter();
+
+        assertTrue(homePage.isAddressInputFilled(), "Адрес не появился в поле ввода");
+        homePage.clickAddButton();
+        String confirmedCity = homePage.getConfirmedAddress();
+        assertFalse(confirmedCity.isEmpty(), "Подтверждённый адрес пуст");
     }
 
     @AfterEach
