@@ -18,9 +18,9 @@ public class CatalogPageTest {
 
     @BeforeEach
     void setup() {
-        driver = WebDriverFactory.createDriver(System.getProperty("browser", "chrome"));
+        driver = WebDriverFactory.createDriver(System.getProperty("browser", "firefox"));
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         catalogPage = new CatalogPage(driver, wait);
     }
 

@@ -9,18 +9,22 @@ import java.time.Duration;
 import java.util.List;
 
 public class CatalogPage extends BasePage {
-    private final By categoryCards = By.xpath("//div[@class='inverted-catalog-category__content-wrapper' and .//h3[text()='Супермаркет']]");
+    private final By categoryCards = By.xpath("//div[@class='inverted-catalog-category catalog-department__category-item' and .//h3[text()='Супермаркет']]");
+
+//    private final By categoryCards = By.xpath("//div[@class='inverted-catalog-category__content-wrapper' and .//h3[text()='Супермаркет']]");
 
     private final By autoGoodsCategory = By.xpath("//a[contains(@href, '/catalog/avtotovary/') and .//h3[normalize-space(text())='Автотовары']]");
-    private final By tyresAndDisksCategory = By.xpath("//h3[text()='Шины и диски']/ancestor::a");
-    private final By tyresCategory = By.xpath("//h3[text()='Шины']/ancestor::a");
+    //    private final By tyresAndDisksCategory = By.xpath("//h3[text()='Шины и диски']/ancestor::a");
+    By tyresAndDisksCategory = By.xpath("//a[contains(@class, 'inverted-catalog-category__link') and .//h3[text()='Шины и диски']]");
 
 
-    // В наличии — toggle switch
+    //    private final By tyresCategory = By.xpath("//h3[text()='Шины']/ancestor::a");
+    private final By tyresCategory = By.xpath("//a[contains(@class, 'inverted-catalog-category__link') and .//h3[text()='Шины']]");
+
+
 //    By.xpath("//span[text()='В наличии']/ancestor::div[contains(@class, 'pui-toggle')]//div[contains(@class,'pui-toggle-control')]"
     private final By inStockToggle = By.xpath("//span[text()='В наличии']/ancestor::div[contains(@class, 'pui-toggle')]//div[contains(@class,'pui-toggle-control')]");
 
-    // Проверка, что "В наличии" применён
     private final By inStockLabelActive = By.xpath("//div[contains(@class,'pui-toggle')]//span[text()='В наличии']");
 
     // Поля ввода цены
@@ -64,12 +68,22 @@ public class CatalogPage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(autoGoodsCategory)).click();
     }
 
+//    public void clickTyresAndDisks() {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(tyresAndDisksCategory));
+//        wait.until(ExpectedConditions.elementToBeClickable(tyresAndDisksCategory)).click();
+//    }
+
     public void clickTyresAndDisks() {
-        wait.until(ExpectedConditions.elementToBeClickable(tyresAndDisksCategory)).click();
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(tyresAndDisksCategory));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 
+
     public void clickTyres() {
-        wait.until(ExpectedConditions.elementToBeClickable(tyresCategory)).click();
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(tyresCategory));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 
     public boolean isOnUrl(String expectedUrl) {
@@ -110,16 +124,15 @@ public class CatalogPage extends BasePage {
         }
     }
 
-    public void buyProduct(){
-//        WebElement buyButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test='buy-button']")));
-//        buyButton.click();
-
-//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test='buy-button']"))).click();
+    public void buyProduct() {
         int attempts = 0;
         while (attempts < 2) {
             try {
                 WebElement buyButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test='buy-button']")));
-                buyButton.click();
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", buyButton);
+
+//                WebElement buyButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test='buy-button']")));
+//                buyButton.click();
                 break;
             } catch (StaleElementReferenceException e) {
                 attempts++;

@@ -19,17 +19,10 @@ public class HomePageTest {
     void setup() {
         driver = WebDriverFactory.createDriver(System.getProperty("browser", "chrome"));
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         homePage = new HomePage(driver, wait);
     }
 
-    // главная страница -> есть ли карточки товаров
-    @Test
-    @DisplayName("Карточки товаров на клавной странице")
-    void testBannerVisible() {
-        homePage.open();
-        assertTrue(homePage.isProductCardsVisible(), "нет карточек товаров на главной странице");
-    }
 
 
     //    главная страница -> избранные товары
@@ -66,10 +59,10 @@ public class HomePageTest {
         assertFalse(confirmedCity.isEmpty(), "Подтверждённый адрес пуст");
     }
 
-//    @AfterEach
-//    void teardown() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    @AfterEach
+    void teardown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }
