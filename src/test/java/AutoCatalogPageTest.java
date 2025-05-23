@@ -1,4 +1,4 @@
-import itma.pages.CatalogPage;
+import itma.pages.AutoCatalogPage;
 import itma.utils.WebDriverFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,17 +11,17 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CatalogPageTest {
+public class AutoCatalogPageTest {
     WebDriver driver;
-    CatalogPage catalogPage;
+    AutoCatalogPage autoCatalogPage;
     private WebDriverWait wait;
 
     @BeforeEach
     void setup() {
-        driver = WebDriverFactory.createDriver(System.getProperty("browser", "firefox"));
+        driver = WebDriverFactory.createDriver(System.getProperty("browser", "chrome"));
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        catalogPage = new CatalogPage(driver, wait);
+        autoCatalogPage = new AutoCatalogPage(driver, wait);
     }
 
 
@@ -29,8 +29,9 @@ public class CatalogPageTest {
     @Test
     @DisplayName("категории товаров на странице каталогов")
     void testBannerVisible() {
-        catalogPage.open();
-        assertTrue(catalogPage.isCategoryCardsVisible(), "нет категорий товаров на странице каталога");
+        autoCatalogPage.open();
+
+        assertTrue(autoCatalogPage.isCategoryVisible("Автотовары"), "нет категорий товаров на странице каталога");
     }
 
 
@@ -39,35 +40,34 @@ public class CatalogPageTest {
     @Test
     @DisplayName("категории товаров на странице каталогов")
     void testBuyTyre() {
-        catalogPage.open();
+        autoCatalogPage.open();
 
-        catalogPage.clickAutoGoods();
+        autoCatalogPage.clickCategory("Автотовары");
         assertTrue(
-                catalogPage.isOnUrl("https://megamarket.ru/catalog/avtotovary/"),
+                autoCatalogPage.isOnUrl("https://megamarket.ru/catalog/avtotovary/"),
                 "Не перешли в категорию 'Автотовары'"
         );
-
-        catalogPage.clickTyresAndDisks();
+        autoCatalogPage.openTyresAndDisks();
         assertTrue(
-                catalogPage.isOnUrl("https://megamarket.ru/catalog/shiny-i-diski/"),
+                autoCatalogPage.isOnUrl("https://megamarket.ru/catalog/shiny-i-diski/"),
                 "Не перешли в категорию 'Шины и диски'"
         );
 
-        catalogPage.clickTyres();
+        autoCatalogPage.openTyres();
         assertTrue(
-                catalogPage.isOnUrl("https://megamarket.ru/catalog/shiny/"),
+                autoCatalogPage.isOnUrl("https://megamarket.ru/catalog/shiny/"),
                 "Не перешли в категорию 'Шины'"
         );
 
 
-        catalogPage.clickInStockToggle();
-        catalogPage.setPriceRange();
-        catalogPage.selectDiameter20();
+        autoCatalogPage.clickInStockToggle();
+        autoCatalogPage.setPriceRange(20,  30);
+        autoCatalogPage.selectDiameter(20);
 
 
-        assertTrue(catalogPage.isProductListNotEmpty(), "Нет товаров после фильтрации");
+        assertTrue(autoCatalogPage.isProductListNotEmpty(), "Нет товаров после фильтрации");
 
-        catalogPage.buyProduct();
+        autoCatalogPage.buyFirstProduct();
     }
 
     @AfterEach
